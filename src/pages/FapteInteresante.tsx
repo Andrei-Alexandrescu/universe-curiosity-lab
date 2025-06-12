@@ -1,187 +1,145 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, Shuffle } from 'lucide-react';
-
-const facts = [
-  {
-    emoji: '🌌',
-    title: 'Universul în expansiune',
-    fact: 'Universul se extinde cu o viteză de aproximativ 70 km/s pentru fiecare megaparsec. Aceasta înseamnă că galaxiile îndepărtate se îndepărtează de noi cu viteze incredibile!'
-  },
-  {
-    emoji: '⭐',
-    title: 'Stelele neutroni',
-    fact: 'O linguriță de material dintr-o stea neutron ar cântări aproximativ 6 miliarde de tone pe Pământ. Aceste stele sunt atât de dense încât un centimetru cub ar avea masa unui munte!'
-  },
-  {
-    emoji: '🌙',
-    title: 'Luna se îndepărtează',
-    fact: 'Luna se îndepărtează de Pământ cu aproximativ 3.8 cm în fiecare an. În trecut, Luna era mult mai aproape și zilele pe Pământ erau mai scurte!'
-  },
-  {
-    emoji: '🪐',
-    title: 'Inelele lui Saturn',
-    fact: 'Deși par solide din depărtare, inelele lui Saturn sunt formate din miliarde de particule de gheață și rocă, de la dimensiunea unor fulgi de zăpadă până la case întregi!'
-  },
-  {
-    emoji: '☀️',
-    title: 'Soarele nostru',
-    fact: 'Soarele conține 99.86% din masa întregului sistem solar. În fiecare secundă, Soarele convertește 600 de milioane de tone de hidrogen în heliu!'
-  },
-  {
-    emoji: '🌍',
-    title: 'Viteza Pământului',
-    fact: 'Pământul călătorește prin spațiu cu o viteză de aproximativ 30 km/s în jurul Soarelui. În același timp, întregul sistem solar se mișcă prin galaxie cu 250 km/s!'
-  },
-  {
-    emoji: '🌑',
-    title: 'Găurile negre',
-    fact: 'Gaura neagră din centrul galaxiei noastre, Sagittarius A*, are o masă de 4 milioane de ori mai mare decât Soarele și este la 26.000 de ani-lumină distanță de noi!'
-  },
-  {
-    emoji: '🚀',
-    title: 'Viteza luminii',
-    fact: 'Lumina călătorește cu 299.792.458 metri pe secundă. La această viteză, poți face înconjurul Pământului de 7.5 ori într-o singură secundă!'
-  },
-  {
-    emoji: '❄️',
-    title: 'Spațiul cosmic',
-    fact: 'Temperatura medie a universului este de -270.42°C, doar cu 2.73 grade deasupra zeroului absolut. Aceasta este temperatura radiației cosmice de fond!'
-  },
-  {
-    emoji: '🌟',
-    title: 'Formarea stelelor',
-    fact: 'Toate elementele grele din corpul tău (carbon, oxigen, azot) au fost create în interiorul stelelor. Suntem literalmente făcuți din "praf de stele"!'
-  }
-];
+import { ChevronLeft, ChevronRight, Lightbulb } from 'lucide-react';
 
 const FapteInteresante = () => {
   const [currentFact, setCurrentFact] = useState(0);
 
+  const fapte = [
+    {
+      title: "Viteza luminii",
+      fact: "Lumina de la Soare ajunge pe Pământ în aproximativ 8 minute și 20 de secunde.",
+      emoji: "☀️"
+    },
+    {
+      title: "Găuri negre", 
+      fact: "O găură neagră poate avea o gravitație atât de puternică încât nici măcar lumina nu poate scăpa din ea.",
+      emoji: "🕳️"
+    },
+    {
+      title: "Neutron Stars",
+      fact: "O linguriță cu materie de la o stea neutronă ar cântări aproximativ un miliard de tone pe Pământ.",
+      emoji: "⭐"
+    },
+    {
+      title: "Temperatura spațiului",
+      fact: "Temperatura din spațiul cosmic este de aproximativ -270°C, aproape de zero absolut.",
+      emoji: "🥶"
+    },
+    {
+      title: "Vârsta universului",
+      fact: "Universul are aproximativ 13.8 miliarde de ani, determinat prin studierea radiației cosmice de fond.",
+      emoji: "🌌"
+    },
+    {
+      title: "Dimensiunea Soarelui",
+      fact: "În Soare s-ar putea încăpea aproximativ 1.3 milioane de planete ca Pământul.",
+      emoji: "🌞"
+    },
+    {
+      title: "Zilele pe Venus",
+      fact: "O zi pe Venus (243 zile pământești) durează mai mult decât un an pe Venus (225 zile pământești).",
+      emoji: "♀️"
+    },
+    {
+      title: "Calea Lactee",
+      fact: "Galaxia noastră se deplasează prin spațiu cu o viteză de aproximativ 600 km/secundă.",
+      emoji: "🌠"
+    }
+  ];
+
   const nextFact = () => {
-    setCurrentFact((prev) => (prev + 1) % facts.length);
+    setCurrentFact((prev) => (prev + 1) % fapte.length);
   };
 
   const prevFact = () => {
-    setCurrentFact((prev) => (prev - 1 + facts.length) % facts.length);
+    setCurrentFact((prev) => (prev - 1 + fapte.length) % fapte.length);
   };
 
-  const randomFact = () => {
-    let newIndex;
-    do {
-      newIndex = Math.floor(Math.random() * facts.length);
-    } while (newIndex === currentFact && facts.length > 1);
-    setCurrentFact(newIndex);
-  };
+  useEffect(() => {
+    const interval = setInterval(nextFact, 10000); // Auto-advance every 10 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen space-gradient py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Știați că...?
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Descoperă fapte uimitoare și curiosități fascinante despre univers
+          <p className="text-muted-foreground">
+            Descoperă fapte fascinante despre univers
           </p>
         </div>
 
-        {/* Main Fact Card */}
-        <div className="relative mb-8">
-          <Card className="bg-card/50 border-border min-h-[400px] flex flex-col justify-between">
-            <CardHeader className="text-center pb-4">
-              <div className="text-6xl mb-4 animate-float">
-                {facts[currentFact].emoji}
+        <div className="relative">
+          <Card className="bg-card/50 border-border min-h-[300px] flex items-center">
+            <CardContent className="p-8 text-center w-full">
+              <div className="text-6xl mb-6 animate-float">
+                {fapte[currentFact].emoji}
               </div>
-              <CardTitle className="text-2xl md:text-3xl text-foreground">
-                {facts[currentFact].title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow flex items-center justify-center px-6 md:px-12">
-              <p className="text-lg md:text-xl text-muted-foreground text-center leading-relaxed">
-                {facts[currentFact].fact}
+              
+              <h3 className="text-2xl font-semibold mb-4 text-primary">
+                {fapte[currentFact].title}
+              </h3>
+              
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                {fapte[currentFact].fact}
               </p>
-            </CardContent>
-            <div className="p-6 text-center">
-              <div className="text-sm text-muted-foreground">
-                {currentFact + 1} din {facts.length}
+
+              <div className="flex items-center justify-center mt-6 gap-2">
+                <Lightbulb className="text-accent" size={20} />
+                <span className="text-sm text-muted-foreground">
+                  Faptul {currentFact + 1} din {fapte.length}
+                </span>
               </div>
-            </div>
+            </CardContent>
           </Card>
 
-          {/* Navigation buttons */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-card/80 hover:bg-card"
-            onClick={prevFact}
-          >
-            <ChevronLeft size={20} />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-card/80 hover:bg-card"
-            onClick={nextFact}
-          >
-            <ChevronRight size={20} />
-          </Button>
-        </div>
-
-        {/* Control Buttons */}
-        <div className="flex justify-center gap-4 mb-8">
-          <Button onClick={prevFact} variant="outline">
-            <ChevronLeft className="mr-2" size={16} />
-            Anterior
-          </Button>
-          <Button onClick={randomFact} className="bg-accent hover:bg-accent/90">
-            <Shuffle className="mr-2" size={16} />
-            Aleatoriu
-          </Button>
-          <Button onClick={nextFact} variant="outline">
-            Următor
-            <ChevronRight className="ml-2" size={16} />
-          </Button>
-        </div>
-
-        {/* Progress Dots */}
-        <div className="flex justify-center gap-2 mb-8">
-          {facts.map((_, index) => (
-            <button
-              key={index}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentFact
-                  ? 'bg-primary'
-                  : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-              }`}
-              onClick={() => setCurrentFact(index)}
-            />
-          ))}
-        </div>
-
-        {/* Quick Facts Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {facts.slice(0, 6).map((fact, index) => (
-            <Card
-              key={index}
-              className={`bg-card/30 border-border cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-card/50 ${
-                index === currentFact ? 'ring-2 ring-primary' : ''
-              }`}
-              onClick={() => setCurrentFact(index)}
+          {/* Navigation Controls */}
+          <div className="flex justify-between items-center mt-6">
+            <Button 
+              variant="outline" 
+              onClick={prevFact}
+              className="flex items-center gap-2"
             >
-              <CardContent className="p-4 text-center">
-                <div className="text-2xl mb-2">{fact.emoji}</div>
-                <h3 className="text-sm font-semibold text-foreground mb-1">
-                  {fact.title}
-                </h3>
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {fact.fact.substring(0, 80)}...
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+              <ChevronLeft size={16} />
+              Anterior
+            </Button>
+
+            <div className="flex gap-2">
+              {fapte.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentFact(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    index === currentFact 
+                      ? 'bg-primary' 
+                      : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <Button 
+              variant="outline" 
+              onClick={nextFact}
+              className="flex items-center gap-2"
+            >
+              Următor
+              <ChevronRight size={16} />
+            </Button>
+          </div>
+        </div>
+
+        {/* Auto-advance indicator */}
+        <div className="text-center mt-4">
+          <p className="text-sm text-muted-foreground">
+            ✨ Faptele se schimbă automat la fiecare 10 secunde
+          </p>
         </div>
       </div>
     </div>
